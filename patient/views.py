@@ -10,7 +10,52 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from blood import forms as bforms
 from blood import models as bmodels
+from django.shortcuts import render
+from django.http import HttpResponse
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from .ml_model import BloodDonationModel 
+import numpy as np
+# Instantiate the model
+model = BloodDonationModel()
 
+# Instantiate the scaler
+scaler = StandardScaler()
+
+def prediction_view(request):
+    if request.method == 'GET':
+        # Get input data from the request
+        recency = float(request.GET.get('recency', ''))
+        frequency = float(request.GET.get('frequency', ''))
+        monetary = float(request.GET.get('monetary', ''))
+        time = float(request.GET.get('time', ''))
+
+        # Load the model
+        model.load_model('model.pkl', 'scaler.pkl')
+
+        # Preprocess the input data
+        user_input = np.array([[recency, frequency, monetary, time]])  # Reshape to 2D array
+
+        # Fit the scaler and transform the input data
+        X_train, _, _, _ = model.load_and_preprocess_data('transfusion.csv')
+        scaler.fit(X_train)
+        user_input_scaled = scaler.transform(user_input.reshape(1, -1))
+
+        # Make predictions
+        prediction = model.predict(user_input_scaled)
+
+        # Prepare context for rendering the template
+        context = {
+            'recency': recency,
+            'frequency': frequency,
+            'monetary': monetary,
+            'time': time,
+            'prediction': prediction[0],
+        }
+
+        # Render the template with the context
+        return render(request, 'prediction_results.html', context)
 
 def patient_signup_view(request):
     userForm=forms.PatientUserForm()

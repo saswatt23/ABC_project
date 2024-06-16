@@ -1,8 +1,9 @@
 from django.urls import path
-
+from .views import prediction_view
 from django.contrib.auth.views import LoginView
 from . import views
 urlpatterns = [
+    path('prediction/', prediction_view, name='prediction'),
     path('patientlogin', LoginView.as_view(template_name='patient/patientlogin.html'),name='patientlogin'),
     path('patientsignup', views.patient_signup_view,name='patientsignup'),
     path('patient-dashboard', views.patient_dashboard_view,name='patient-dashboard'),

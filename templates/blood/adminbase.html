@@ -12,6 +12,35 @@
 
     <style>
 
+/* Add this CSS to your existing styles */
+
+.sidebar form {
+    margin-top: 20px;
+}
+
+.sidebar input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid hsl(120, 93%, 45%);
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.sidebar button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+.sidebar button:hover {
+    background-color: #0056b3;
+}
 
 
  
@@ -184,7 +213,14 @@ body{
             <li><a style="text-decoration:none;" href="/admin-request"><i class="fas fa-sync-alt"></i>Blood Requests</a></li>
             <li><a style="text-decoration:none;" href="/admin-request-history"><i class="fas fa-history"></i>Request History</a></li>
             <li><a style="text-decoration:none;" href="/admin-blood"><i class="fas fa-hand-holding-water"></i>Blood Stock</a></li>
-           
+           <li>
+            <form action="{% url 'search' %}" method="get">
+              <li>
+                  <input type="text" name="q" placeholder="Search...">
+                  <button type="submit"><i class="fas fa-search"></i></button>
+              </li>
+          </form>
+          </li>
         </ul> 
 
     </div>
@@ -200,9 +236,8 @@ body{
     </div>
 </div>
 <!--
-developed By : sumit kumar
-facebook : fb.com/sumit.luv
-youtube : youtube.com/lazycoders
+developed By : saswat,sujit,satya,aniket
+insta : @robust,@saswat,@sujit,@aniket
 -->
 <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

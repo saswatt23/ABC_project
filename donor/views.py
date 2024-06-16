@@ -10,6 +10,31 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from blood import forms as bforms
 from blood import models as bmodels
+from django.shortcuts import render
+
+
+def search_view(request):
+    # Your search functionality implementation goes here
+    # For demonstration purposes, let's assume we have a list of donation centers
+    donation_centers = [
+        {'name': 'Sum hospital', 'location': 'bhubaneswar'},
+        {'name': 'SCB medical;', 'location': 'cuttack'},
+        # Add more donation centers as needed
+    ]
+
+    # Retrieve search query from request
+    query = request.GET.get('q', '')
+
+    # Perform search logic if needed (for example, filter donation centers based on query)
+
+    # Pass search query and donation centers to the template for rendering
+    context = {
+        'query': query,
+        'donation_centers': donation_centers,
+    }
+
+    # Render the HTML template and pass context data to it
+    return render(request, 'search_results.html', context)
 
 def donor_signup_view(request):
     userForm=forms.DonorUserForm()

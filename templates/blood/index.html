@@ -1,49 +1,139 @@
-{% load static %}
+<!-- dashboard.html -->
+{%load static%}
 <!DOCTYPE html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/chatbot.css' %}">
     <style>
-        .xyz{
-          margin-bottom: 0px;
-          background-image: url('{% static "image/homepage.jpg" %}');
-          background-size: cover;
-          background-repeat: no-repeat;
+      body {
+            font-family: Arial, sans-serif;
         }
-      </style>
-      
+      .xyz{
+        margin-bottom: 0px;
+        background-image: url('{% static "image/blood_donation_image.jpg" %}');
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      .quote-card {
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .quote-card .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+            animation: slideQuote 30s infinite;
+        }
+        .quote-card .card:hover {
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+            animation-play-state: paused;
+        }
+        .quote-card .card-body {
+            padding: 20px;
+        }
+        .quote-card .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .quote-card .card-text {
+            font-size: 1.1rem;
+            color: #666;
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        /* Animation */
+        @keyframes slideQuote {
+            0% {
+                transform: translateX(15);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    
+    </style>
 </head>
-
-
 <body>
-  {% include "blood/navbar.html" %}
-<br>
-<section id="section-jumbotron" style="margin-bottom: 0px;" class="jumbotron jumbotron-fluid d-flex justify-content-center align-items-center xyz">
-    <div class="container text-center">
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-     
-      
-      <br><br><br><br>
-      
-    </div>  
-  </section>
+    {% include "blood/navbar.html" %}
+    <br>
+    <section id="section-jumbotron" style="margin-bottom: 0px;" class="jumbotron jumbotron-fluid d-flex justify-content-center align-items-center xyz">
+        <div class="container text-center">
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br>
+        </div>  
+        <div class="container quote-card">
+          <div class="row justify-content-center">
+              <div class="col-md-6">
+                  <div class="card">
+                      <div class="card-body">
+                          <h5 class="card-title">Words of Inspiration</h5>
+                          <p class="card-text">"The gift of blood is the gift of life."</p>
+                          <p class="card-text">"Donate blood and be a hero."</p>
+                          <p class="card-text">"Your blood donation can save lives."</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </section>
 
+    <div class="jumbotron" style="margin-top: 0px;margin-bottom: 0px;">
+        <p class="lead text-center">“Opportunities knock the door sometimes, so don’t let it go and donate blood."<br>रक्तदानं कुर्वन्तु</p>
+        <p class="text-center">- saswat,sujit,satya,aniket</p>
+    </div>
 
-  <div class="jumbotron" style="margin-top: 0px;margin-bottom: 0px;">
-
-    <p class="lead text-center">“Opportunities knock the door sometimes, so don’t let it go and donate blood.”
-      </p>
-    
-    <p class="text-center">- LazyCoder</p>
-    
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+          <div class="col-md-6">
+              <form action="{% url 'prediction' %}" method="get" class="form-inline justify-content-center">
+                  <label for="recency" class="sr-only">Recency (months)</label>
+                  <input type="text" id="recency" name="recency" placeholder="How long ago did you donate blood? (in months)" class="form-control mr-sm-2 mb-2" style="width: 250px;">
+                  
+                  <label for="frequency" class="sr-only">Frequency (times)</label>
+                  <input type="text" id="frequency" name="frequency" placeholder="How often do you donate blood? (number of times)" class="form-control mr-sm-2 mb-2" style="width: 250px;">
+                  
+                  <label for="monetary" class="sr-only">Monetary (c.c. blood)</label>
+                  <input type="text" id="monetary" name="monetary" placeholder="How much blood did you donate? (in cubic centimeters)" class="form-control mr-sm-2 mb-2" style="width: 250px;">
+                  
+                  <label for="time" class="sr-only">Time (months)</label>
+                  <input type="text" id="time" name="time" placeholder="How long have you been donating blood? (in months)" class="form-control mr-sm-2 mb-2" style="width: 250px;">
+                  
+                  <button type="submit" class="btn btn-primary mb-2">Check Eligibility</button>
+              </form>
+          </div>
+      </div>
   </div>
-  {% include "blood/footer.html" %}
+
+  
+  <div id="chatbot">
+    <div id="chatbot-header">
+        <h4>MSD</h4>
+        <button id="chatbot-close">X</button>
+    </div>
+    <div id="chatbot-messages">
+        <div class="message bot-message">Hello! How can I assist you today?</div>
+    </div>
+    <div id="chatbot-input-container">
+        <input type="text" id="chatbot-input" placeholder="Type your message...">
+        <button id="chatbot-send">Send</button>
+    </div>
+</div>
 
 
+    {% include "blood/footer.html" %}
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="{% static 'js/chatbot.js' %}"></script>
+    
 </body>
-
 </html>
-<!--
-developed By : sumit kumar
-facebook : fb.com/sumit.luv
-youtube : youtube.com/lazycoders
--->
